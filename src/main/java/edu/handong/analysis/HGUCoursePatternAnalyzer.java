@@ -2,6 +2,8 @@ package edu.handong.analysis;
 
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HGUCoursePatternAnalyzer {
 	
@@ -34,11 +36,12 @@ public class HGUCoursePatternAnalyzer {
 		numOfCourses = Integer.parseInt(args[1]);
 	
 		students = initiateStudentArrayFromLines(lines);
-		
 		System.out.println("Number of All Students: " + numOfStudents);
-		for(Student student: students) {
+		//System.out.print(students.length);
+		for(Student student: students) { //3번만 돌아가게 하고 싶다
 			System.out.println(student.getName());
 		}
+		
 		
 		courses = initiateCourseArrayFromLines(lines);
 		System.out.println("Number of All Courses: " + numOfCourses);
@@ -55,12 +58,34 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private Student[] initiateStudentArrayFromLines(String[] lines) {
 		
-		// TODO: implement this method
+		//name이랑 course의 이름만 받아ㅏ와야 함 //name은 [1]이고
+		int namelen = lines.length; 
+		String [] names = new String[namelen];
+		Student [] studentNames = new Student[namelen];
 		
-		
-		return null;
+		int j=0, i=0;
+		for( i= 0; i < namelen; i++){       
+			names[i] = lines[i].trim().split(",")[1];				
+			Student student= new Student(names[i]);	
+			if(i>0) {
+				if(studentExist(studentNames, student)==false) {//같은이름이 아닐경우  
+			 		studentNames[j] = new Student(names[i]); //새로운 instance 생성
+			 		j++;
+				}
+			}
+			else {
+				studentNames[j] = new Student(names[i]);
+				j++;
+			}
+		}		
+		Student [] oneStudent = new Student[j]; //필요할까?
+		for(i=0;i<j;i++) {
+			oneStudent[i] = new Student(names[i]);
+			oneStudent[i] = studentNames[i];
+		}
+		return oneStudent;
 	}
-
+	
 	/**
 	 * This method check if there is the same name of the second arugement in the array, students
 	 * @param students
@@ -70,7 +95,14 @@ public class HGUCoursePatternAnalyzer {
 	private boolean studentExist(Student[] students, Student student) {
 		
 		// TODO: implement this method
-
+		//중복제거하는거
+		int i = 0;
+		
+		while(students[i]!=null) {			
+			if(students[i].getName().equals(student.getName()) == true)//같지 않으면 false를  return
+				return true;				
+			else i++; //while문 업데이트
+		}
 		return false;
 	}
 	
@@ -82,8 +114,32 @@ public class HGUCoursePatternAnalyzer {
 	private Course[] initiateCourseArrayFromLines(String[] lines) {
 		
 		// TODO: implement this method
-		
-		return null;
+		//Course courseName = new Course (line);
+		int namelen = lines.length; 
+		String[] course = new String [namelen];
+		Course[] courseNames = new Course [namelen];
+				
+		int j=0, i=0;
+		for( i= 0; i < namelen; i++){       
+			course[i] = lines[i].trim().split(",")[2];				
+			Course cour= new Course (course[i]);	
+			if(i>0) {
+				if(courseExist(courseNames, cour)==false) {//같은이름이 아닐경우  
+					courseNames[j] = new Course(course[i]); //새로운 instance 생성
+			 		j++;
+				}
+			}
+			else {
+				courseNames[j] = new Course(course[i]);
+				j++;
+			}
+		}		
+		Course [] a = new Course[j]; 
+		for(i=0;i<j;i++) {
+			a[i] = new Course(course[i]);
+			a[i] = courseNames[i];
+		}
+		return a;
 	}
 
 	/**
@@ -95,8 +151,15 @@ public class HGUCoursePatternAnalyzer {
 	private boolean courseExist(Course[] courses, Course course) {
 		
 		// TODO: implement this method
-
+		int i = 0;
+		
+		while(courses[i]!=null) {			
+			if(courses[i].getCourseName().equals(course.getCourseName()) == true)//같지 않으면 false를  return
+				return true;				
+			else i++; //while문 업데이트
+		}
 		return false;
+	
 	}
 
 }
